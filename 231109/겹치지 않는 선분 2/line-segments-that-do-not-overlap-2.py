@@ -8,19 +8,21 @@
 '''
 
 def count_non_overlapping_segments(segments):
-    # 선분들을 시작점 기준으로 정렬
-    sorted_segments = sorted(segments, key = lambda x: (x[1], x[0]))
-
-    # 겹치지 않는 선분의 수 세기
+    # 겹치지 않는 선분의 수를 저장할 변수 초기화
     non_overlapping_count = 0
-    current_end = -float('inf') # 현재 선분의 끝점 초기화
 
-    # 정렬된 선분들 순회
-    for segment in sorted_segments:
-        # 현재 선분의 끝점이 다음 선분의 시작점보다 작다면, 겹치지 않음
-        if segment[0] > current_end:
+    # 각 선분을 기준으로 다른 선분들과 겹치는지 확인
+    for i in range(N):
+        overlap = False
+        for j in range(N):
+            if i != j:
+                # i번째 선분의 끝점이 j번째 선분의 시작점보다 클 경우, 겹친다고 판단
+                if segments[i][1] > segments[j][0]:
+                    overlap = True
+                    break
+        # 만약 겹치는 선분이 없다면 카운트를 증가
+        if not overlap:
             non_overlapping_count += 1
-            current_end = segment[1]
 
     # 겹치지 않는 선분의 수 반환
     return non_overlapping_count
