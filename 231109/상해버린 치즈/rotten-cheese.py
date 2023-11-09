@@ -1,41 +1,40 @@
-'''
-이 문제를 해결하기 위한 방법을 단계별로 설명하겠습니다. 
-우리는 이 정보를 사용하여 상한 치즈를 먹고 아플 가능성이 있는 최대 인원 수를 추정해야 합니다.
-
-1. 각 치즈마다 먹은 시간을 추적하며, 각 사람이 아프기 시작한 정확한 시간을 기록합니다.
-2. 아픈 기록으로부터 역추적하여, 해당 시간 이전에 먹은 치즈들 중 어느 것이 상한 치즈일 가능성이 있는지 파악합니다.
-3. 아픈 사람이 먹은 치즈를 먹은 다른 모든 사람들도 아플 가능성이 있다고 간주합니다.
-4. 모든 아픈 사람의 기록에 대해 이러한 과정을 반복하여, 상한 치즈를 먹었을 가능성이 있는 모든 사람들의 목록을 만듭니다.
-5. 이 목록에 있는 사람 수가 필요한 약의 최대 개수가 됩니다.
-'''
-
-# 입력 받기
+# 입력을 받습니다.
 N, M, D, S = map(int, input().split())
-cheese_logs = [list(map(int, input().split())) for _ in range(D)]
-sick_logs = [list(map(int, input().split())) for _ in range(S)]
+cheese_eaten = [[] for _ in range(M+1)]  # 치즈별로 먹은 사람과 시간을 저장할 리스트
+sick_people = {}  # 아픈 시간과 그 시간에 해당하는 사람을 저장할 딕셔너리
 
-# 각 치즈를 누가 언제 먹었는지 저장하는 딕셔너리를 초기화합니다.
-cheese_eaten = {m: [] for m in range(1, M+1)}
+# 치즈를 먹은 기록을 저장합니다.
+for _ in range(D):
+    p, m, t = map(int, input().split())
+    cheese_eaten[m].append((t, p))  # 치즈 m을 시간 t에 사람 p가 먹었다.
 
-# 치즈 먹은 기록을 저장합니다.
-for log in cheese_logs:
-    p, m, t = log
-    cheese_eaten[m].append((p, t))
+# 각 치즈를 먹은 기록을 시간순으로 정렬합니다.
+for m in range(1, M+1):
+    cheese_eaten[m].sort()
 
-# 상한 치즈를 먹었을 가능성이 있는 사람들의 집합입니다.
-possible_sick_people = set()
+# 아픈 사람의 기록을 저장합니다.
+for _ in range(S):
+    p, t = map(int, input().split())
+    sick_people[p] = t
 
-# 아픈 기록을 통해 상한 치즈를 역추적합니다.
-for log in sick_logs:
-    p, t = log
-    # 해당 사람이 아픈 시간 이전에 먹은 모든 치즈를 확인합니다.
-    for m, eaten_times in cheese_eaten.items():
-        for e_p, e_t in eaten_times:
-            # 아픈 사람이 먹은 시간과 치즈를 먹은 시간을 비교합니다.
-            if e_p == p and e_t < t:
-                # 이 치즈를 먹은 다른 모든 사람도 상한 치즈를 먹었을 가능성이 있습니다.
-                for other_p, _ in eaten_times:
-                    possible_sick_people.add(other_p)
+# 상한 치즈 추정을 위한 딕셔너리입니다.
+# 사람이 먹은 치즈 중에서 아프기 전에 먹은 마지막 치즈를 상한 치즈라고 가정합니다.
+suspected_bad_cheese = set()
+for p, t in sick_people.items():
+    last_eaten = -1
+    for m in range(1, M+1):
+        # 해당 사람이 먹은 각 치즈에 대해 아프기 전 마지막 치즈를 찾습니다.
+        for cheese_time, cheese_person in cheese_eaten[m]:
+            if cheese_person == p and cheese_time < t and cheese_time > last_eaten:
+                last_eaten = cheese_time
+                suspected_bad_cheese.add(m)
+
+# 상한 치즈를 먹은 사람들을 찾습니다.
+sick_after_eating = set()
+for m in suspected_bad_cheese:
+    for cheese_time, cheese_person in cheese_eaten[m]:
+        # 상한 치즈를 먹었던 모든 사람을 찾습니다.
+        sick_after_eating.add(cheese_person)
 
 # 필요한 약의 최대 개수를 출력합니다.
-print(len(possible_sick_people))
+print(len(sick_after_eating))
