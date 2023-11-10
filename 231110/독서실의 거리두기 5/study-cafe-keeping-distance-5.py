@@ -1,24 +1,24 @@
 N = int(input())
 seats = input().strip()
 
-def calc_distances(seats):
-    # '1' 사이의 거리와 시작점, 끝점으로부터의 거리 계산
-    distances = []
-    last_seat = -1
-    for i, seat in enumerate(seats):
-        if seat == '1':
-            if last_seat != -1:
-                distances.append(i - last_seat - 1)
-            last_seat = i
-    # 시작점과 첫 번째 '1' 사이, 마지막 '1'과 끝점 사이의 거리 추가
-    if seats[0] == '0':
-        distances.append(last_seat)
-    if seats[-1] == '0':
-        distances.append(len(seats) - last_seat - 1)
-    return distances
+def find_max_distance(seats):
+    last_occupied = -1
+    max_distance = 0
 
-distances = calc_distances(seats)
+    for i in range(N):
+        if seats[i] == '1':
+            if last_occupied == -1:
+                # 시작점부터 첫 번째 '1'까지의 거리
+                max_distance = max(max_distance, i)
+            else:
+                # '1'과 '1' 사이의 거리의 절반
+                max_distance = max(max_distance, (i - last_occupied) // 2)
+            last_occupied = i
 
-# 각 거리의 절반을 취하고, 그 중 최댓값을 찾습니다.
-min_max_distance = max((d + 1) // 2 for d in distances)
-print(min_max_distance)
+    # 마지막 '1'부터 끝점까지의 거리
+    if last_occupied != N - 1:
+        max_distance = max(max_distance, N - 1 - last_occupied)
+
+    return max_distance
+
+print(find_max_distance(seats))
