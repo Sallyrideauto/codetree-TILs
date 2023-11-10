@@ -1,53 +1,62 @@
 '''
-병합 정렬(Merge Sort)은 분할 정복(divide and conquer) 방식을 사용하는 효율적인 정렬 알고리즘입니다. 
-주어진 리스트를 반으로 나누고, 각 부분을 재귀적으로 정렬한 후, 두 부분을 병합하는 방식으로 작동합니다. 
-이 알고리즘은 평균적으로 O(n log n)의 시간 복잡도를 가집니다.
+수행 시간과 메모리 사용량이 초과한 원인은 주로 병합 정렬 알고리즘의 구현 방식과 관련이 있습니다. 
+제공된 구현에서는 리스트를 복사하고, 병합할 때 새로운 리스트를 생성하는 방식을 사용하고 있습니다. 
+이러한 접근 방식은 메모리 사용량을 증가시키고, 추가적인 시간도 소모합니다.
 
-병합 정렬을 구현하는 방법은 다음과 같습니다:
+해결 방안 중 하나는 병합 정렬을 좀 더 메모리 효율적으로 구현하는 것입니다. 이를 위해 다음과 같은 접근 방법을 사용할 수 있습니다:
 
-1. 리스트의 길이가 1 이하이면 이미 정렬된 것으로 간주하고 반환합니다.
-2. 그렇지 않으면 리스트를 반으로 나누어 각각을 재귀적으로 정렬합니다.
-3. 두 개의 정렬된 리스트를 병합하여 하나의 정렬된 리스트로 만듭니다.
+1. 원본 리스트를 직접 변경
+   병합 과정에서 새로운 리스트를 생성하는 대신, 원본 리스트에 정렬된 요소를 직접 복사합니다.
+   이렇게 하면 병합 과정에서 발생하는 추가적인 메모리 할당을 줄일 수 있습니다.
+2. 병합에 사용되는 임시 리스트 최적화
+   병합 과정에서 사용되는 임시 리스트의 크기를 최소화하고 재사용하여 메모리 사용량을 줄입니다.
 
-이 프로그램은 merge_sort 함수를 사용하여 입력된 배열을 정렬합니다. 
-merge_sort 함수는 배열을 두 부분으로 나누고, 각 부분을 재귀적으로 정렬한 다음, merge 함수를 사용하여 이 두 배열을 병합합니다. 
-merge 함수는 두 정렬된 배열을 순서대로 비교하며 하나의 정렬된 배열로 만듭니다.
+이 코드는 원본 배열 arr을 직접 수정하며, 정렬된 요소들을 임시 배열 temp에 저장한 후 arr에 다시 복사합니다.
+이러한 방식은 추가적인 메모리 할당을 줄이고, 재귀 호출을 최적화하여 전체적인 성능을 향상시킵니다.
 '''
 
-def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
+def merge_sort(arr, temp, start, end):
+    if end - start > 1:
+        mid = (start + end) // 2
+        merge_sort(arr, temp, start, mid)
+        merge_sort(arr, temp, mid, end)
+        merge_sort(arr, temp, start, mid, end)
 
-    mid = len(arr) // 2
-    left = merge_sort(arr[:mid])    # 왼쪽 반을 재귀적으로 정렬
-    right = merge_sort(arr[mid:])   # 오른쪽 반을 재귀적으로 정렬
+def merge(arr, temp, start, mid, end):
+    i = start
+    j = mid
+    k = start
 
-    return merge(left, right)
-
-def merge(left, right):
-    result = []
-    i = j = 0
-
-    # 왼쪽과 오른쪽 배열을 순회하며 요소를 비교하여 병합
-    while i < len(left) and j < len(right):
-        if left[i] < right[j]:
-            result.append(left[i])
+    while i < mid and j < end:
+        if arr[i] < arr[j]:
+            temp[k] = arr[i]
+            i += 1
         else:
-            result.append(right[j])
+            temp[k] = arr[j]
             j += 1
+        k += 1
 
-    # 남은 요소들을 결과 배열에 추가
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result
+    while i < mid:
+        temp[k] = arr[i]
+        i += 1
+        k += 1
+    
+    while j < end:
+        temp[k] = arr[j]
+        j += 1
+        k += 1
+
+    for i in range(start, end):
+        arr[i] = temp[i]
 
 # 메인 함수
 def main():
     n = int(input())
     arr = list(map(int, input().split()))
+    temp = [0] * n
 
-    sorted_arr = merge_sort(arr)
-    print(' '.join(map(str, sorted_arr)))
+    merge_sort(arr, temp, 0, n)
+    print(' '.join(map(str, arr)))
 
 if __name__ == "__main__":
     main()
