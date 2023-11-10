@@ -1,12 +1,8 @@
 N = int(input())
 seats = input().strip()
 
-# 최소 거리 계산
-def calc_min_dist(distances):
-    return max((d + 1) // 2 for d in distances)
-
-# 1 사이의 거리 계산
 def calc_distances(seats):
+    # '1' 사이의 거리와 시작점, 끝점으로부터의 거리 계산
     distances = []
     last_seat = -1
     for i, seat in enumerate(seats):
@@ -22,4 +18,7 @@ def calc_distances(seats):
     return distances
 
 distances = calc_distances(seats)
-print(calc_min_dist(distances))
+
+# 각 거리의 절반을 취하고, 그 중 최댓값을 찾습니다.
+min_max_distance = max((d + 1) // 2 for d in distances)
+print(min_max_distance)
