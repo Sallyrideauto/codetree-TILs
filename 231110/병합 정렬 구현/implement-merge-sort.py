@@ -20,12 +20,10 @@ def merge_sort(arr, temp, start, end):
         mid = (start + end) // 2
         merge_sort(arr, temp, start, mid)
         merge_sort(arr, temp, mid, end)
-        merge_sort(arr, temp, start, mid, end)
+        merge(arr, temp, start, mid, end)
 
 def merge(arr, temp, start, mid, end):
-    i = start
-    j = mid
-    k = start
+    i, j, k = start, mid, start
 
     while i < mid and j < end:
         if arr[i] < arr[j]:
@@ -40,7 +38,7 @@ def merge(arr, temp, start, mid, end):
         temp[k] = arr[i]
         i += 1
         k += 1
-    
+
     while j < end:
         temp[k] = arr[j]
         j += 1
