@@ -1,13 +1,15 @@
+# 입력 받기
 a, b = map(int, input().split())
 c, d = map(int, input().split())
 
-# 겹치는 구간의 시작점은 두 구간의 시작점 중 더 큰 값
+# 겹치는 구간의 시작과 끝을 계산합니다.
 overlap_start = max(a, c)
-# 겹치는 구간의 끝점은 두 구간의 끝점 중 더 작은 값
 overlap_end = min(b, d)
 
-# 청소된 영역 계산
-# 겹치지 않는 A의 부분 + 겹치지 않는 B의 부분 + 겹치는 부분
-cleaned_area = (b - a + 1) + (d - c + 1) - max(0, (overlap_end - overlap_start + 1))
+# 겹치는 구간의 길이를 계산합니다. 겹치는 구간이 없으면 0입니다.
+overlap_length = max(0, overlap_end - overlap_start + 1)
 
-print(cleaned_area - 1)
+# 전체 청소된 구역의 길이는 두 구역의 길이의 합에서 겹치는 구간의 길이를 뺀 것입니다.
+cleaned_length = (b - a + 1) + (d - c + 1) - overlap_length
+
+print(cleaned_length - 1)
