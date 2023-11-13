@@ -21,7 +21,7 @@ for i in range(a2, b2 + 1):
 arr_1 = list(set(a) & set(b))
 arr_2 = list(set(c) & set(d))
 
-if len(arr_1) == 0 and len(arr_2) == 0:
+if len(arr_1) == 0 or len(arr_2) == 0:
     print('nonoverlapping')
 else:
     print('overlapping')
