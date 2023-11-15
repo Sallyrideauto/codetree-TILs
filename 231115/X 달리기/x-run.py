@@ -1,36 +1,28 @@
-def min_time_to_reach_corrected(X):
-    # dp[시간][거리] = 속도
+def min_time_to_reach_optimized(X):
+    # dp[거리] = 최소 시간
     # 초기 속도는 1m/s, 최대 시간은 X를 넘지 않음
-    dp = [[float('inf')] * (X + 1) for _ in range(X + 1)]
-    dp[1][1] = 1    # 시작 시간 1초, 거리 1m, 속도 1m/s
+    dp = [float('inf')] * (X + 1)
+    dp[1] = 1  # 거리 1m에 도달하는데 필요한 최소 시간은 1초
 
-    # 가능한 모든 시간과 거리에 대해 계산
-    for time in range(1, X):
-        for distance in range(1, X):
-            speed = dp[time][distance]
-            if speed == float('inf'):
+    # 가능한 모든 거리에 대해 최소 시간을 계산
+    for distance in range(1, X):
+        if dp[distance] == float('inf'):
+            continue
+
+        time = dp[distance]
+        # 현재 거리에서 1m/s 증가, 유지, 감소하는 경우를 고려
+        for speed_change in [-1, 0, 1]:
+            new_speed = distance // time + speed_change
+            if new_speed <= 0:
                 continue
+            new_distance = distance + new_speed
+            if new_distance <= X:
+                dp[new_distance] = min(dp[new_distance], time + 1)
 
-            # 속도를 유지하는 경우
-            if distance + speed <= X:
-                dp[time + 1][distance + speed] = min(dp[time + 1][distance + speed], speed)
-            
-            # 속도를 증가시키는 경우
-            if distance + speed + 1 <= X:
-                dp[time + 1][distance + speed + 1] = min(dp[time + 1][distance + speed + 1], speed + 1)
+    return dp[X] if dp[X] != float('inf') else -1  # 목적지에 도달하는 것이 불가능한 경우 -1 반환
 
-            # 속도를 감소시키는 경우(0m/s는 불가)
-            if speed > 1 and distance + speed - 1 <= X:
-                dp[time + 1][distance + speed - 1] = min(dp[time + 1][distance + speed - 1], speed - 1)
-
-    # 목적지에 도달하는 최고 시간을 찾음
-    min_time = float('inf')
-    for time in range(1, X + 1):
-        if dp[time][X] == 1:    # 목적지에 도착했고, 속도가 1m/s인 경우
-            min_time = min(min_time, time)
-
-    return min_time if min_time != float('inf') else -1 # 목적지에 도달하는 것이 불가능할 경우 -1 반환
-
+# 예제 입력
 X = int(input())
 
-print(min_time_to_reach_corrected(X))
+# 함수 실행 및 결과 출력
+print(min_time_to_reach_optimized(X))
