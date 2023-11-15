@@ -1,13 +1,14 @@
 n = int(input())
 n_arr = list(map(int, input().split()))
 
-sum_val = 0
-sum_arr = []
+max_sum = n_arr[0]  # 첫 번째 원소로 초기화
+current_sum = 0
 
 for number in n_arr:
-    sum_val += number
-    if sum_val < 0:
-        sum_val = 0
-    sum_arr.append(sum_val)
+    current_sum += number
+    if current_sum > max_sum:
+        max_sum = current_sum
+    if current_sum < 0:
+        current_sum = 0
 
-print(max(sum_arr))
+print(max_sum)
