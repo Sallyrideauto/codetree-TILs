@@ -6,9 +6,13 @@ def continuous_nums(a, b, c):
     left_gap = positions[1] - positions[0]
     right_gap = positions[2] - positions[1]
 
-    # 가장 작은 이동 횟수 계산
-    # 두 사람이 이미 연속된 위치에 있는 경우는 한 명만 이동하면 됨
-    return min(left_gap, right_gap) - 1
+    # 두 간격 중 하나가 1이면, 다른 한쪽만 이동하면 됨
+    if left_gap == 1 or right_gap == 1:
+        return min(left_gap, right_gap)
+
+    # 두 간격 모두 1보다 크면, 두 사람 모두 이동해야 함
+    return (left_gap - 1) + (right_gap - 1)
+
 
 # 함수 테스트
 a, b, c = map(int, input().split())
