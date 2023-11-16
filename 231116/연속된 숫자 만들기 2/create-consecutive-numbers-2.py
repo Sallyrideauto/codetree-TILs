@@ -6,12 +6,16 @@ def continuous_nums(a, b, c):
     left_gap = positions[1] - positions[0]
     right_gap = positions[2] - positions[1]
 
-    # 두 간격 중 하나가 1이면, 다른 한쪽만 이동하면 됨
+    # 이미 연속된 숫자 위치에 있는 경우
     if left_gap == 1 or right_gap == 1:
-        return min(left_gap, right_gap)
+        return 0
 
-    # 두 간격 모두 1보다 크면, 두 사람 모두 이동해야 함
-    return (left_gap - 1) + (right_gap - 1)
+    # 한 명만 이동하는 경우(한쪽 간격이 2)
+    if left_gap == 2 or right_gap == 2:
+        return 1
+
+    # 두 명이 이동해야 하는 경우
+    return 2
 
 
 # 함수 테스트
