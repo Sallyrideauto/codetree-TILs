@@ -1,27 +1,38 @@
 def max_distance(N, seats):
-    # 좌석 간격과 최대 거리를 저장하는 변수
-    max_gap = 0
-
-    # 현재 간격을 측정하기 위한 변수
+    # 빈 좌석 간격 리스트
+    gaps = []
     current_gap = 0
-    
-    # 첫 번째 사람을 만날 때까지의 간격
-    first_person = seats.find('1')
-    last_person = seats.rfind('1')
 
-    # 첫 번째와 마지막 사람 사이의 간격만 고려
-    for i in range(first_person, last_person + 1):
-        # 현재 좌석이 비어 있으면 간격을 증가시킴
-        if seats[i] == '0':
+    # 양쪽 끝 좌석이 비어있는지 확인
+    left_end_empty = seats[0] == '0'
+    right_end_empty = seats[-1] == '0'
+
+    for seat in seats:
+        if seat == '0':
             current_gap += 1
         else:
-            # 좌석이 차 있으면 최대 간격 업데이트 후 간격 초기화
-            max_gap = max(max_gap, current_gap)
+            if current_gap != 0:
+                gaps.append(current_gap)
             current_gap = 0
 
-    # 새로운 사람을 추가했을 때의 최대 거리 계산
-    return max(first_person, (max_gap + 1) // 2, N - last_person - 1)
+    # 양 끝에 빈 좌석이 있으면 해당 간격을 추가
+    if left_end_empty:
+        gaps.append(gaps[0] if gaps else N)
+    if right_end_empty:
+        gaps.append(gaps[-1] if gaps else N)
 
+    # 각 간격에서의 최대 거리 계산
+    max_distance = 0
+    for gap in gaps:
+        if left_end_empty or right_end_empty:
+            max_distance = max(max_distance, gap)
+            left_end_empty = right_end_empty = False
+        else:
+            max_distance = max(max_distance, (gap + 1) // 2)
+
+    return max_distance
+
+# 예제 입력 테스트
 N = int(input())
 seats = input()
 
