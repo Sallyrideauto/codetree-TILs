@@ -22,9 +22,9 @@ def max_distance_between_people(N, seating):
         # 양쪽 끝에 사람이 앉아 있는 경우
         if start > 0 and end < N - 1:
             distance = (length - 1) // 2
-        # 한쪽 끝만 사람이 앉아 있는 경우
+        # 한쪽 끝에만 사람이 앉아 있는 경우
         else:
-            distance = length - 1
+            distance = length
         max_distance = max(max_distance, distance)
 
     return max_distance
