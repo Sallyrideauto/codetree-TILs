@@ -26,7 +26,7 @@ def max_distance_between_people(N, seating):
         else:
             distance = length - 1
         max_distance = max(max_distance, distance)
-ghkr
+
     return max_distance
 
 N = int(input())
