@@ -1,25 +1,27 @@
-def min_line_segments_coverage(n, segments):
-    # Sort the line segments based on their starting point(x1)
-    segments.sort(key = lambda x: x[0])
+def min_enclosing_line_segment_length(segments):
+    # 선분들을 시작점(x1) 기준으로 정렬
+    segments.sort()
 
-    # Find the maximum gap between consecutive segments
-    max_gap = 0
-    max_gap_index = 0
-    for i in range(n - 1):
-        gap = segments[i + 1][0] - segments[i][1]
-        if gap > max_gap:
-            max_gap = gap
-            max_gap_index = i
+    # 가장 긴 선분을 찾기 위해 각 선분의 길이를 계산
+    segment_lengths = [x2 - x1 for x1, x2 in segments]
 
-    # Handle corner case when the maximum gap is at the beginning or the end
-    if max_gap_index == 0 or max_gap_index == n - 2:
-        if max_gap_index == 0:
-            return segments[-1][1] - segments[1][0]
-        else:
-            return segments[-2][1] - segments[0][0]
+    # 가장 긴 선분의 길이와 인덱스를 찾음
+    max_length = max(segment_lengths)
+    max_length_index = segment_lengths.index(max_length)
 
-    # Calculate the minimum coverage without the segment contributing to the maximum gap
-    return segments[-1][1] - segments[0][0] - max_gap
+    # 가장 긴 선분을 제외하고 나머지 선분들을 포함하는 선분의 길이를 계산
+    if max_length_index == 0:
+        # 가장 긴 선분이 리스트의 처음에 있다면, 마지막 선분의 끝점에서 두 번째 선분의 시작점을 뺀다.
+        return segments[-1][1] - segments[1][0]
+    elif max_length_index == len(segments) - 1:
+        # 가장 긴 선분이 리스트의 마지막에 있다면, 끝에서 두 번째 선분의 끝점에서 첫 번째 선분의 시작점을 뺀다.
+        return segments[-2][1] - segments[0][0]
+    else:
+        # 그렇지 않다면, 가장 긴 선분을 제외한 나머지 선분들 중 첫 번째 선분의 시작점과 마지막 선분의 끝점 사이의 거리를 구한다.
+        return max(segments[-1][1] - segments[0][0] - max_length,
+                   segments[max_length_index][1] - segments[0][0],
+                   segments[-1][1] - segments[max_length_index + 1][0])
+
 
 n = int(input())
 segments = []
@@ -28,4 +30,5 @@ for _ in range(n):
     x1, x2 = map(int, input().split())
     segments.append((x1, x2))
 
-print(min_line_segments_coverage(n, segments))
+# 선분의 최소 길이 계산 및 출력
+print(min_enclosing_line_segment_length(segments))
