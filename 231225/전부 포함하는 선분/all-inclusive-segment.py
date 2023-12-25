@@ -7,32 +7,28 @@ def min_length_after_removal(n, segments):
     :param segments: List of tuples representing the line segments (x1, x2)
     :return: Minimum length of the encompassing line segment after removal
     """
-    # Sort the segments based on their starting and ending points
-    segments.sort(key=lambda x: (x[0], x[1]))
+    # Sort the segments based on their starting points
+    segments.sort()
 
-    # Find the overall min start point and max end point
-    min_start = segments[0][0]
-    max_end = max(segments, key=lambda x: x[1])[1]
+    # Initialize the minimum length after removal as a large number
+    min_length = float('inf')
 
-    # Initialize the minimum length after removal
-    min_length = max_end - min_start
-
-    # Calculate the length if each segment were removed
+    # Calculate the minimum length for each segment when it is removed
     for i in range(n):
         if i == 0:
-            # If the first segment is removed
-            new_min_start = segments[1][0]
+            # If the first segment is removed, consider the second segment's start to the last segment's end
+            start = segments[1][0]
         else:
-            new_min_start = min_start
+            start = segments[0][0]
 
         if i == n - 1:
-            # If the last segment is removed
-            new_max_end = segments[-2][1]
+            # If the last segment is removed, consider the first segment's start to the second last segment's end
+            end = segments[-2][1]
         else:
-            new_max_end = max(segments[i+1][1], max_end)
+            end = segments[-1][1]
 
-        # Update the minimum length after removal
-        min_length = min(min_length, new_max_end - new_min_start)
+        # Update the minimum length
+        min_length = min(min_length, end - start)
 
     return min_length
 
