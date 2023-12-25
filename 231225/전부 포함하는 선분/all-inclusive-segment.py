@@ -10,28 +10,34 @@ def min_length_after_removal(n, segments):
     # Sort the segments based on their starting points
     segments.sort()
 
+    # Initialize variables to store the start of the first segment and end of the last segment
+    first_start = segments[0][0]
+    last_end = segments[-1][1]
+
     # Initialize the minimum length after removal as a large number
-    min_length = float('inf')
+    min_length = last_end - first_start
 
     # Calculate the minimum length for each segment when it is removed
     for i in range(n):
         if i == 0:
-            # If the first segment is removed, consider the second segment's start to the last segment's end
-            start = segments[1][0]
+            # If the first segment is removed
+            next_start = segments[1][0]
+            length = last_end - next_start
+        elif i == n - 1:
+            # If the last segment is removed
+            prev_end = segments[-2][1]
+            length = prev_end - first_start
         else:
-            start = segments[0][0]
-
-        if i == n - 1:
-            # If the last segment is removed, consider the first segment's start to the second last segment's end
-            end = segments[-2][1]
-        else:
-            end = segments[-1][1]
+            # For middle segments, calculate the gap between the previous segment's end and the next segment's start
+            prev_end = segments[i - 1][1]
+            next_start = segments[i + 1][0]
+            length = last_end - first_start - (next_start - prev_end)
 
         # Update the minimum length
-        min_length = min(min_length, end - start)
+        min_length = min(min_length, length)
 
     return min_length
-
+    
 n = int(input())
 segments = []
 
