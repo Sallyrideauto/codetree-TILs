@@ -16,7 +16,7 @@ for seat in seats:
     # 사람이 앉은 경우
     else:
         # 최대 거리 업데이트
-        max_distance = max(max_distance, (current_distance + 1) // 2)
+        max_distance = max(max_distance, current_distance)
         # 현재 공석 개수 초기화
         current_distance = 0
 
@@ -24,4 +24,4 @@ for seat in seats:
 max_distance = max(max_distance, current_distance)
 
 # 최대 거리 출력
-print(max_distance)
+print((max_distance + 1) // 2)
