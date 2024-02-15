@@ -1,29 +1,26 @@
 # 입력 받기
 N = int(input())  # 좌석의 개수 N
-seats = input()   # 좌석 상태를 나타내는 문자열
+seat = list(input())   # 좌석 상태를 나타내는 문자열
 
-# 가장 가까운 두 사람의 거리의 최댓값을 저장할 변수
-max_distance = 0
-# 사람이 앉을 수 있는 시작 인덱스를 저장할 변수
-start_index = 0
+def min_dist():
+    dist = N
+    # 둘 다 1인 곳에 대해 모든 쌍을 조사하여, 그 중 가장 가까운 거리 구하기
+    for i in range(N):
+        for j in range(i + 1, N):
+            if seat[i] == '1' and seat[j] == '1':
+                dist = min(dist, j - i)
 
-# 좌석 상태를 순회하며 최대 거리 계산
+    return dist
+
+ans = 0
+# 들어갈 위치를 일일이 정해 보며 그 상황에서 가장 가까운 사람간의 거리를 구해 가능한 경우 중 최대값 계산
 for i in range(N):
-    # 사람이 앉지 않은 경우
-    if seats[i] == '0':
-        # 시작 인덱스가 설정되지 않은 경우, 시작 인덱스를 설정
-        if start_index == 0:
-            start_index = i
-    # 사람이 앉은 경우
-    else:
-        # 시작 인덱스가 설정되어 있을 때, 최대 거리 갱신
-        if start_index != 0:
-            max_distance = max(max_distance, (i - start_index) // 2)
-            start_index = 0
+    if seat[i] == '0':
+        # 비어있는 위치에 인원 배치
+        seat[i] = '1'
+        # 가장 가까운 사람 간 거리를 구해 최대값을 갱신
+        ans = max(ans, min_dist())
+        # 다시 채워 줬던 값을 되돌려 줌
+        seat[i] = '0'
 
-# 마지막 좌석까지의 거리를 고려하여 최대 거리 업데이트
-if start_index != 0:
-    max_distance = max(max_distance, N - 1 - start_index) + 1
-
-# 최대 거리 출력
-print(max_distance)
+print(ans)
