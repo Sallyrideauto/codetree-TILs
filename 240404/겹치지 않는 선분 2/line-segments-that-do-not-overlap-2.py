@@ -1,7 +1,7 @@
 def solution():
     n = int(input())
     lines = [list(map(int, input().split())) for _ in range(n)]
-    lines.sort(key=lambda x: x[1])
+    lines.sort(key=lambda x: x[0])  # 시작점 값을 기준으로 선분들을 정렬합니다.
 
     cnt = 0
     end = lines[0][1]
