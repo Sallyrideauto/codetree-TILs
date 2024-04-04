@@ -9,11 +9,11 @@ def solution(n, m, board):
     # 각 위치까지의 최대 합을 구합니다.
     for i in range(1, n):
         for j in range(m):
-            # 이전 행에서의 최대 합 중 더 큰 값을 선택하여 현재 위치의 최대 합을 구합니다.
+            # 이전 행의 최대 합 중 현재 열을 포함한 부분합의 최대값을 선택합니다.
             dp[i][j] = max(dp[i-1][max(j-1, 0):min(j+2, m-1)]) + board[i][j]
     
-    # 마지막 행의 최대 합을 반환합니다.
-    return max(dp[-1])
+    # 전체 영역에서의 최대 합을 반환합니다.
+    return max(max(row) for row in dp)
 
 def main():
     n, m = map(int, input().split())
