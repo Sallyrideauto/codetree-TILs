@@ -1,19 +1,20 @@
 def solution(n, m, board):
-    # dp[i][j]는 (i, j) 위치까지의 최대 합을 저장합니다.
+    # dp 배열을 모두 0으로 초기화합니다.
     dp = [[0] * m for _ in range(n)]
     
-    # 첫 번째 행은 바로 이전 행의 값을 더합니다.
-    for j in range(m):
-        dp[0][j] = board[0][j]
+    # 첫 번째 행은 그대로 복사합니다.
+    dp[0] = board[0]
     
-    # 각 위치까지의 최대 합을 구합니다.
+    # 두 번째 행부터는 이전 행까지의 최대 부분합을 고려하여 현재 위치까지의 최대 부분합을 계산합니다.
     for i in range(1, n):
         for j in range(m):
-            # 이전 행의 최대 합 중 현재 열을 포함한 부분합의 최대값을 선택합니다.
-            dp[i][j] = max(dp[i-1][max(j-1, 0):min(j+2, m-1)]) + board[i][j]
+            # 왼쪽 위, 위, 오른쪽 위에서의 최대 부분합을 찾습니다.
+            max_sum = max(dp[i-1][max(j-1, 0):min(j+2, m-1)])
+            # 현재 위치까지의 최대 부분합은 현재 값과 이전 행의 최대 부분합을 더한 값 중 큰 것입니다.
+            dp[i][j] = max_sum + board[i][j]
     
-    # 전체 영역에서의 최대 합을 반환합니다.
-    return max(max(row) for row in dp)
+    # 마지막 행의 최대 부분합 중 최대값을 반환합니다.
+    return max(dp[-1])
 
 def main():
     n, m = map(int, input().split())
