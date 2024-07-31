@@ -5,7 +5,7 @@ if N == 1:
     print(0)
 else:
     ans = 0
-    for i in range(N):
+    for i in range(N - 1):
         if arr[i] > arr[i + 1]:
             ans = i + 1
             break
