@@ -1,14 +1,12 @@
-a, b = map(int, input().split())
-c, d = map(int, input().split())
+a, b = tuple(map(int, input().split()))
+c, d = tuple(map(int, input().split()))
 
-arr = [a, b, c, d]
+area = [0] * 101
 
-min_arr = min(arr)
-max_arr = max(arr)
-
-cleaned = 0
-
-for i in range(min_arr, max_arr):
-    cleaned += 1
+for i in range(a, b):
+    area[i] = 1
     
-print(cleaned)
+for j in range(c, d):
+    area[j] = 1
+    
+print(area.count(1))
