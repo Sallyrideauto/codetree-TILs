@@ -1,24 +1,17 @@
 n = int(input())
 ranges = [tuple(map(int, input().split())) for _ in range(n)]
 
-# x의 초기 범위는 첫 번째 조건의 범위로 설정
-min_x, max_x = ranges[0]
-
-# 가능한 최소 x 탐색
-result = None
-
-for x in range(min_x, max_x + 1):
-    valid = True
+# 가능한 초기값 x를 1부터 10000까지 시도합니다.
+for x in range(1, 10001):
     current_value = x
+    valid = True
     
     for a, b in ranges:
         current_value *= 2
         if current_value < a or current_value > b:
             valid = False
             break
-        
-    if valid:
-        result = x
-        break
     
-print(result)
+    if valid:
+        print(x)
+        break
