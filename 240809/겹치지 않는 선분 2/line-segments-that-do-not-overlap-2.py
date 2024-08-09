@@ -1,26 +1,29 @@
-N = int(input())
-segments = []
+# 변수 선언 및 입력
+n = int(input())
+x = [
+    tuple(map(int, input().split()))
+    for _ in range(n)
+]
 
-for _ in range(N):
-    x1, x2 = map(int, input().split())
-    segments.append((x1, x2))
+ans = 0
 
-# 두 선분이 겹치는지 확인하는 함수
-def is_overlapping(seg1, seg2):
-    x1, x2 = seg1
-    y1, y2 = seg2
-    return not (x2 < y1 or y2 < x1)
+# 다른 선분과 겹치지 않는 선분의 수를 구합니다.
+for i in range(n):
+	# i번째 선분이 다른 선분과 겹치지 않는지 확인합니다.
+	overlap = False
+	
+	for j in range(n):
+		# 자기 자신은 제외합니다.
+		if j == i:
+			continue
+		
+		# x1이 큰 쪽이 x2가 더 작다면 겹치게 됩니다.
+		if (x[i][0] <= x[j][0] and x[i][1] >= x[j][1]) or (x[i][0] >= x[j][0] and x[i][1] <= x[j][1]):
+			overlap = True
+			break
+	
+    # 겹치지 않았다면 정답의 개수에 하나를 추가합니다.
+	if overlap == False:
+		ans += 1
 
-# 겹치지 않는 선분의 수를 세는 코드
-non_overlapping_count = 1
-
-for i in range(N):
-    independent = True  # 초기 상태를 독립적인 선분이라고 가정
-    for j in range(N):
-        if i != j and is_overlapping(segments[i], segments[j]):
-            independent = False  # 다른 선분과 겹치면 독립적이지 않음
-            break
-    if independent:
-        non_overlapping_count += 1
-
-print(non_overlapping_count)
+print(ans)
