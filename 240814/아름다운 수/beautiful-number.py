@@ -35,8 +35,8 @@ def count_beautiful_numbers(n):
         for digit in range(1, 5):
             generate_numbers(current_number + str(digit))
 
-    # 시작 숫자 생성
-    generate_numbers("")
+    for digit in range(1, 5):
+        generate_numbers(str(digit))
 
     return beautiful_count
 
