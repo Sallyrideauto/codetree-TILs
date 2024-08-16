@@ -5,7 +5,6 @@ def calculate_diamond(k):
 def get_gold_and_cost(grid, n, k, x, y):
     # 주어진 중앙점 (x, y)에서 k에 따른 마름모 안의 금의 개수와 비용 계산
     gold_count = 0
-    cost = calculate_diamond(k)
 
     for i in range(n):
         for j in range(n):
@@ -13,7 +12,7 @@ def get_gold_and_cost(grid, n, k, x, y):
             if abs(x - i) + abs(y - j) <= k:
                 gold_count += grid[i][j]
 
-    return gold_count, cost
+    return gold_count, calculate_diamond(k)
 
 def max_gold(n, m, grid):
     max_gold_count = 0
