@@ -12,7 +12,7 @@ def count_ways(n):
 
     # dp 배열을 채워 나가기
     for i in range(4, n + 1):
-        dp[i] = (dp[i - 2] + dp[t - 3]) % MOD
+        dp[i] = (dp[i - 2] + dp[i - 3]) % MOD
 
     return dp[n]
 
