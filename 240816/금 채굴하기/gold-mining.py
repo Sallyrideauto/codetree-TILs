@@ -18,7 +18,7 @@ def max_gold(n, m, grid):
     max_gold_count = 0
 
     # k의 범위를 0부터 n까지 반복
-    for k in range(n):
+    for k in range(n + 1):
         for i in range(n):
             for j in range(n):
                 gold_count = get_gold_count(grid, n, k, i, j)
