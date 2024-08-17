@@ -15,7 +15,7 @@ def count_ways(n):
 
     # dp 배열을 채우는 과정
     for i in range(3, n + 1):
-        dp[i] = (dp[i - 1] + dp[i - 2] * 2 + dp[i - 3]) % MOD
+        dp[i] = (dp[i - 1] + dp[i - 2] * 3) % MOD
 
     return dp[n]
 
