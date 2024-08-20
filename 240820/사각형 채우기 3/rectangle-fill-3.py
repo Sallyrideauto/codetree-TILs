@@ -10,11 +10,13 @@ def count_ways(n):
     if n >= 1:
         dp[1] = 2  # 1 * 2와 2 * 1 두 가지 방법
     if n >= 2:
-        dp[2] = 7  # 2 × 2 크기의 사각형을 채우는 방법
+        dp[2] = 7  # 2 * 2 크기의 사각형을 채우는 방법
+    if n >= 3:
+        dp[3] = 22  # 2 * 3 크기의 사각형을 채우는 방법
 
     # dp 배열을 채우는 과정
-    for i in range(3, n + 1):
-        dp[i] = (dp[i - 1] * 2 + dp[i - 2] * 3) % MOD
+    for i in range(4, n + 1):
+        dp[i] = (dp[i - 1] * 2 + dp[i - 2] * 3 + dp[i - 3]) % MOD
 
     return dp[n]
 
