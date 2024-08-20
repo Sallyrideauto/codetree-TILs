@@ -1,6 +1,6 @@
 def dfs(x, y, n, grid, visited):
     # 이동 가능한 방향: 상하좌우
-    directions = [(-1, 0), (1, 0), (0, 1), (0, 1)]
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     stack = [(x, y)]
     cnt = 0
 
