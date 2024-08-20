@@ -1,25 +1,24 @@
 def count_ways(n):
-    # 모듈로 연산을 위한 상수
     MOD = 1000000007
 
-    # dp 배열 초기화
-    dp = [0] * (n + 1)
+    if n == 0:
+        return 1
+    elif n == 1:
+        return 2
+    elif n == 2:
+        return 7
+    elif n == 3:
+        return 22
 
-    # 기본 사례 설정
-    dp[0] = 1  # 빈 사각형을 채우는 방법은 1가지
-    if n >= 1:
-        dp[1] = 2  # 1 * 2와 2 * 1 두 가지 방법
-    if n >= 2:
-        dp[2] = 7  # 2 * 2 크기의 사각형을 채우는 방법
-    if n >= 3:
-        dp[3] = 22  # 2 * 3 크기의 사각형을 채우는 방법
+    # 이전 값들을 저장
+    a, b, c, d = 1, 2, 7, 22
 
-    # dp 배열을 채우는 과정
     for i in range(4, n + 1):
-        dp[i] = (dp[i - 1] * 2 + dp[i - 2] * 3 + dp[i - 3]) % MOD
+        # 새로운 값 계산
+        next_val = (d * 2 + c * 3 + b) % MOD
+        a, b, c, d = b, c, d, next_val
 
-    return dp[n]
+    return d
 
 n = int(input())
-
 print(count_ways(n))
