@@ -1,26 +1,16 @@
-MOD = 1000000007
-
-def tiling_ways(n):
-    if n == 1:
-        return 2
-    elif n == 2:
-        return 7
-    
-    # dp 배열 초기화
-    dp = [0] * (n + 1)
-    
-    # 초기 값 설정
-    dp[1] = 2
-    dp[2] = 7
-    
-    # DP 점화식을 통한 값 채우기
-    for i in range(3, n + 1):
-        dp[i] = (2 * dp[i - 1] + 3 * dp[i - 2]) % MOD
-    
-    return dp[n]
-
-# 입력 받기
 n = int(input())
 
-# 출력
-print(tiling_ways(n))
+dp = [0] * 1001
+dphalf = [0] * 1001 # 마지막 1개가 한 칸만 채워진 경우
+
+dp[1] = 2
+dp[2] = 7
+
+dphalf[1] = 1
+dphalf[2] = 3
+
+for i in range(3, n + 1):
+    dp[i] = (dp[i - 1] * 2 + dp[i - 2] + dphalf[i - 1] * 2) % 1000000007
+    dphalf[i] = (dp[i - 1] + dphalf[i - 1]) % 1000000007
+
+print(dp[n])
