@@ -1,19 +1,7 @@
-def read_input():
-    import sys
-    input = sys.stdin.read
-    data = input().split()
-    N, M = int(data[0]), int(data[1])
-    heights = []
-    index = 2
-    for _ in range(N):
-        heights.append(list(map(int, data[index:index + M])))
-        index += M
-    return N, M, heights
-
 def find_safe_areas(N, M, heights, rain_level):
     visited = [[False] * M for _ in range(N)]
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-
+    
     def dfs(x, y):
         stack = [(x, y)]
         while stack:
@@ -23,7 +11,7 @@ def find_safe_areas(N, M, heights, rain_level):
                 if 0 <= nx < N and 0 <= ny < M and not visited[nx][ny] and heights[nx][ny] > rain_level:
                     visited[nx][ny] = True
                     stack.append((nx, ny))
-
+    
     area_count = 0
     for i in range(N):
         for j in range(M):
@@ -31,13 +19,22 @@ def find_safe_areas(N, M, heights, rain_level):
                 visited[i][j] = True
                 dfs(i, j)
                 area_count += 1
-
+                
     return area_count
 
 def main():
-    N, M, heights = read_input()
-    max_height = max(max(row) for row in heights)
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    N, M = int(data[0]), int(data[1])
+    heights = []
+    index = 2
+    for _ in range(N):
+        heights.append(list(map(int, data[index:index+M])))
+        index += M
 
+    max_height = max(max(row) for row in heights)
+    
     max_areas = 0
     best_k = 0
     for k in range(1, max_height + 1):
@@ -45,8 +42,12 @@ def main():
         if safe_areas > max_areas:
             max_areas = safe_areas
             best_k = k
-
-    print(best_k, max_areas)
+            
+    # 최대 안전 영역의 수가 0일 경우, 가장 작은 K 값(1)을 출력
+    if max_areas == 0:
+        print(1, 0)
+    else:
+        print(best_k, max_areas)
 
 if __name__ == "__main__":
     main()
