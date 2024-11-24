@@ -2,13 +2,12 @@ from itertools import product
 
 def evaluate_expression(expression, values):
     value_map = {chr(ord('a') + i): values[i] for i in range(len(values))}
-    result = 0
     current_value = value_map[expression[0]]
-    op = None
     
     for i in range(1, len(expression), 2):
         op = expression[i]
-        next_value = value_map[expression[i+1]]
+        next_char = expression[i + 1]
+        next_value = value_map[next_char]
         if op == '+':
             current_value += next_value
         elif op == '-':
