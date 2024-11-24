@@ -7,22 +7,24 @@ def collapse_bombs(n, m, bombs):
 
         # Check if the latest added bomb causes any explosion.
         while True:
-            # Traverse the stack to identify consecutive segments of the same bomb value
             temp_stack = []
             i = 0
+            exploded = False
+
             while i < len(stack):
                 j = i
                 while j < len(stack) and stack[j] == stack[i]:
                     j += 1
+
                 # If the length of the segment is greater than or equal to m, skip adding to temp_stack (simulate explosion)
                 if j - i >= m:
-                    i = j
+                    exploded = True
                 else:
                     temp_stack.extend(stack[i:j])
-                    i = j
-            
-            # If no change, break the loop
-            if len(temp_stack) == len(stack):
+                i = j
+
+            # If no explosion occurred, break the loop
+            if not exploded:
                 break
             else:
                 stack = temp_stack
