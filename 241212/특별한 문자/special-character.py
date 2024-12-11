@@ -35,4 +35,4 @@ if __name__ == "__main__":
     if result is not None:
         print(result)
     else:
-        None
+        print("None")
